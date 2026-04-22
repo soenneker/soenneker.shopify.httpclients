@@ -1,20 +1,19 @@
 using Soenneker.Shopify.HttpClients.Abstract;
-using Soenneker.Tests.FixturedUnit;
-using Xunit;
+using Soenneker.Tests.HostedUnit;
 
 namespace Soenneker.Shopify.HttpClients.Tests;
 
-[Collection("Collection")]
-public sealed class ShopifyGraphQlHttpClientTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public sealed class ShopifyGraphQlHttpClientTests : HostedUnitTest
 {
     private readonly IShopifyGraphQlHttpClient _httpclient;
 
-    public ShopifyGraphQlHttpClientTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public ShopifyGraphQlHttpClientTests(Host host) : base(host)
     {
         _httpclient = Resolve<IShopifyGraphQlHttpClient>(true);
     }
 
-    [Fact]
+    [Test]
     public void Default()
     {
 
