@@ -11,14 +11,14 @@ using Soenneker.Utils.HttpClientCache.Abstract;
 
 namespace Soenneker.Shopify.HttpClients;
 
-///<inheritdoc cref="IShopifyGraphQlHttpClient"/>
 public sealed class ShopifyGraphQlHttpClient : IShopifyGraphQlHttpClient
 {
     private readonly IHttpClientCache _httpClientCache;
     private readonly IConfiguration _config;
+    private readonly string _cacheKey = $"{nameof(ShopifyGraphQlHttpClient)}-{Guid.NewGuid():N}";
 
     private const string _prodBaseUrlTemplate = "https://{store_name}.myshopify.com/admin/api/{api_version}/graphql.json";
-    private const string _defaultApiVersion = "2026-01";
+    private const string _defaultApiVersion = "2026-07";
 
     public ShopifyGraphQlHttpClient(IHttpClientCache httpClientCache, IConfiguration config)
     {
@@ -28,7 +28,7 @@ public sealed class ShopifyGraphQlHttpClient : IShopifyGraphQlHttpClient
 
     public ValueTask<HttpClient> Get(CancellationToken cancellationToken = default)
     {
-        return _httpClientCache.Get(nameof(ShopifyGraphQlHttpClient), (config: _config, baseUrl: ResolveBaseUrl(_config)), static state =>
+        return _httpClientCache.Get(_cacheKey, (config: _config, baseUrl: ResolveBaseUrl(_config)), static state =>
         {
             var apiKey = state.config.GetValueStrict<string>("Shopify:AccessToken");
 
@@ -58,20 +58,13 @@ public sealed class ShopifyGraphQlHttpClient : IShopifyGraphQlHttpClient
             .Replace("{api_version}", apiVersion, StringComparison.Ordinal);
     }
 
-    /// <summary>
-    /// Releases resources used by the current instance.
-    /// </summary>
     public void Dispose()
     {
-        _httpClientCache.RemoveSync(nameof(ShopifyGraphQlHttpClient));
+        _httpClientCache.RemoveSync(_cacheKey);
     }
 
-    /// <summary>
-    /// Asynchronously releases resources used by the current instance.
-    /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     public ValueTask DisposeAsync()
     {
-        return _httpClientCache.Remove(nameof(ShopifyGraphQlHttpClient));
+        return _httpClientCache.Remove(_cacheKey);
     }
 }

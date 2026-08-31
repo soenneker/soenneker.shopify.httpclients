@@ -6,12 +6,12 @@ using Soenneker.Utils.HttpClientCache.Registrar;
 namespace Soenneker.Shopify.HttpClients.Registrars;
 
 /// <summary>
-/// A .NET thread-safe singleton HttpClient for Shopify's GraphQL API.
+/// Registers the authenticated Shopify Admin GraphQL HTTP client provider.
 /// </summary>
 public static class ShopifyGraphQlHttpClientRegistrar
 {
     /// <summary>
-    /// Adds <see cref="ShopifyGraphQlHttpClient"/> as a singleton service. <para/>
+    /// Adds the Shopify Admin GraphQL HTTP client provider as a singleton service. <para/>
     /// </summary>
     public static IServiceCollection AddShopifyGraphQlHttpClientAsSingleton(this IServiceCollection services)
     {
@@ -22,7 +22,7 @@ public static class ShopifyGraphQlHttpClientRegistrar
     }
 
     /// <summary>
-    /// Adds <see cref="ShopifyGraphQlHttpClient"/> as a scoped service. <para/>
+    /// Adds the Shopify Admin GraphQL HTTP client provider as a scoped service. Each scope owns a separate cached HTTP client. <para/>
     /// </summary>
     public static IServiceCollection AddShopifyGraphQlHttpClientAsScoped(this IServiceCollection services)
     {

@@ -6,14 +6,25 @@ using System.Threading;
 namespace Soenneker.Shopify.HttpClients.Abstract;
 
 /// <summary>
-/// A .NET thread-safe singleton HttpClient for Shopify's GraphQL API.
+/// Provides an authenticated HTTP client for Shopify's Admin GraphQL API.
 /// </summary>
-public interface IShopifyGraphQlHttpClient: IDisposable, IAsyncDisposable
+public interface IShopifyGraphQlHttpClient : IDisposable, IAsyncDisposable
 {
     /// <summary>
-    /// Gets the value.
+    /// Gets the shared HTTP client owned by this provider instance.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task containing the result of the operation.</returns>
     ValueTask<HttpClient> Get(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Removes and disposes the HTTP client owned by this provider.
+    /// </summary>
+    new void Dispose();
+
+    /// <summary>
+    /// Asynchronously removes and disposes the HTTP client owned by this provider.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    new ValueTask DisposeAsync();
 }
