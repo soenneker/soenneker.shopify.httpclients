@@ -11,6 +11,7 @@ using Soenneker.Utils.HttpClientCache.Abstract;
 
 namespace Soenneker.Shopify.HttpClients;
 
+/// <inheritdoc cref="IShopifyGraphQlHttpClient" />
 public sealed class ShopifyGraphQlHttpClient : IShopifyGraphQlHttpClient
 {
     private readonly IHttpClientCache _httpClientCache;
