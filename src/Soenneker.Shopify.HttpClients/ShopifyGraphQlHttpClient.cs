@@ -31,7 +31,7 @@ public sealed class ShopifyGraphQlHttpClient : IShopifyGraphQlHttpClient
     {
         return _httpClientCache.Get(_cacheKey, (config: _config, baseUrl: ResolveBaseUrl(_config)), static state =>
         {
-            var apiKey = state.config.GetValueStrict<string>("Shopify:AccessToken");
+            var apiKey = state.config.GetStringStrict("Shopify:AccessToken");
 
             return new HttpClientOptions
             {
@@ -51,7 +51,7 @@ public sealed class ShopifyGraphQlHttpClient : IShopifyGraphQlHttpClient
         if (!string.IsNullOrWhiteSpace(clientBaseUrl))
             return clientBaseUrl;
 
-        string storeName = config.GetValueStrict<string>("Shopify:StoreName");
+        string storeName = config.GetStringStrict("Shopify:StoreName");
         string apiVersion = config["Shopify:ApiVersion"] ?? _defaultApiVersion;
 
         return _prodBaseUrlTemplate
